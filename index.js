@@ -1,8 +1,8 @@
 const express = require('express')
 
-const PORT = 1500
+const PORT = process.env.port || 3000
 
-const Contenedor = require('./Contenedor')
+const Contenedor = require('./contenedor')
 const productos = new Contenedor("productos.txt")
 
 const app = express()
