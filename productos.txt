@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Computadora escritorio",
+    "price": 0.7707081078025568,
+    "thumbnail": "http://url/cdn/computadora escritorio.jpg",
+    "id": 1
+  },
+  {
+    "title": "Notebook",
+    "price": 0.14397767981473986,
+    "thumbnail": "http://url/cdn/notebook.jpg",
+    "id": 2
+  },
+  {
+    "title": "Consola",
+    "price": 0.3865913207021472,
+    "thumbnail": "http://url/cdn/consola.jpg",
+    "id": 4
+  }
+]
