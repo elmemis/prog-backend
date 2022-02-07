@@ -6,15 +6,21 @@
     "id": 1
   },
   {
-    "title": "Notebook",
-    "price": 0.14397767981473986,
-    "thumbnail": "http://url/cdn/notebook.jpg",
-    "id": 2
-  },
-  {
-    "title": "Consola",
-    "price": 0.3865913207021472,
+    "title": "Producto 4",
+    "price": 1.111,
     "thumbnail": "http://url/cdn/consola.jpg",
     "id": 4
+  },
+  {
+    "title": "aaa2a",
+    "price": 0.11,
+    "thumbnail": "asdsad/adad.djs",
+    "id": 5
+  },
+  {
+    "title": "Producto 4",
+    "price": 1.111,
+    "thumbnail": "asdsad/adad.djs",
+    "id": 7
   }
 ]

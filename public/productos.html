@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/css/style.css" type="text/css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css" type="text/css" />
+    </head>
+    <body>
+        <nav>
+            <ul>
+                <a href="/"><li>Inicio</li></a>
+                <a href="/productos"><li>Agregar producto</li></a>
+            </ul>
+        </nav>
+        <div class="container">
+            <form action="/api/productos" method="POST">
+                <div>
+                  <label for="name">Title </label>
+                  <input name="title" />
+                </div>
+                <div>
+                    <label for="name">Price </label>
+                    <input name="price" />
+                </div>
+                <div>
+                    <label for="name">Thumbnail </label>
+                    <input name="thumbnail" />
+                  </div>        
+                <div>
+                <button type="submit">Enviar</button>
+                </div>
+              </form>
+        </div>
+    </body>
+</html>

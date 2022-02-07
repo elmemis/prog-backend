@@ -33,22 +33,51 @@ class Contenedor{
         }
     }
 
+    async update(producto){
+        try{
+            await this.getById(producto.id)
+            .then( async(vProducto) => {
+                vProducto.title = producto.title || vProducto.title
+                vProducto.price = producto.price || vProducto.price
+                vProducto.thumbnail = producto.thumbnail || vProducto.thumbnail
+                await this.getAll().then(async(allProducts) => {
+                    const nProducts = []
+                    for (const p of allProducts){
+                        if (p.id === vProducto.id){
+                            nProducts.push(vProducto)
+                        } else {
+                            nProducts.push(p)
+                        }
+                    }
+                    await fs.writeFileSync(this.archivo, JSON.stringify(nProducts, null, 2), 'utf-8')
+                })
+            })
+            return true
+        }
+        catch(err){
+            throw new Error(`Error en lectura. \n${err}`)
+        }
+    }
+
     async getById(idNumber){
         let producto = {}
         try{
             const allProducts = await this.getAll().then( data => {
-                data.forEach(element => {
+                //data.forEach(element => {
+                for (const element of data){
                     if (element.id == idNumber){
                         producto = element
+                        
                     }
                     
-                });
+                };
             })
             return producto
         }
         catch(err){
             throw new Error(`Error en lectura. \n${err}`)
-        }        
+        }
+        return producto       
     }
 
     async getAll(){
@@ -67,13 +96,14 @@ class Contenedor{
         let guardar = false
         try{
             const allProducts = await this.getAll().then( data => {
-                data.forEach(element => {
+                for (const element of data){
+                //data.forEach(element => {
                     if (element.id != idNumber){
                         productos.push(element)
                     } else {
                         guardar = true
                     }   
-                });
+                }
             })
             if (guardar) {
                 await fs.writeFileSync(this.archivo, JSON.stringify(productos, null, 2), 'utf-8')
@@ -83,6 +113,7 @@ class Contenedor{
         catch(err){
             throw new Error(`Error de escritura. \n${err}`)
         }
+        return guardar
     }
 
     async deleteAll(){
