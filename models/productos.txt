@@ -22,5 +22,11 @@
     "price": "442",
     "thumbnail": "img-1644698731265",
     "id": 11
+  },
+  {
+    "title": "mesa",
+    "price": "102",
+    "thumbnail": "img-1644703851359",
+    "id": 12
   }
 ]

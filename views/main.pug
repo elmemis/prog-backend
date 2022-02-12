@@ -1,0 +1,18 @@
+extends layouts/index.pug
+
+block body
+    form(action="/productos" method="POST" enctype="multipart/form-data")
+        div
+            label(for="name") Title
+            input(name="title")
+        div
+            label(for="name") Price
+            input(name="price")
+        div
+            label(for="img") Thumbnail
+            input(type="file" name="img")
+        div
+            button(type="submit") Enviar
+    div(align="center")
+        p
+            a(href="/productos") Listar productos
