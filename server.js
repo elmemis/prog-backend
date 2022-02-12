@@ -3,18 +3,38 @@ const path = require('path')
 
 const PORT = process.env.port || 8080
 
-//const Contenedor = require('./contenedor')
-//const productos = new Contenedor("productos.txt")
+//const Contenedor = require('./models/productos')
+//const prod = new Contenedor("productos.txt")
+
 const productosRouter = require('./routes/productos')
+
+const { engine } = require('express-handlebars')
 
 const app = express()
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+//app.use(express.json())
+//app.use(express.urlencoded({ extended: true }))
+
+app.engine('hbs', engine({
+  layoutDir: path.join(__dirname, 'views/layouts'),
+  defaultLayout: 'index',
+  extname: 'hbs'
+}))
+app.set('view engine', 'hbs')
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
-app.use('/api/productos', productosRouter)
 
+
+app.get('/', async(req, res) => {
+  //const productos = await prod.getAll()
+  //console.log(pr)
+  //res.render("productos", { productos, name: 'Emiliano'})
+  res.render('main')
+})
+
+app.use('/productos', productosRouter)
+
+/*
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/index.html'))
 })
@@ -22,6 +42,8 @@ app.get('/', (req, res) => {
 app.get('/productos', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/productos.html'))
 })
+*/
+
 /*
 app.get('/productos', async(req, res, ) => {
   const listado = await productos.getAll()

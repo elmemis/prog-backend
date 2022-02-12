@@ -15,10 +15,6 @@ html {
     font-size: 36px
   }
   
-  img {
-    width: 600px
-  }
-  
   form div {
     margin-top: 15px;
     display: flex;

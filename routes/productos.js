@@ -1,21 +1,22 @@
 const express = require('express')
 const { Router } = express;
 
+const upload = require('../middlewares/file')
+
 const router = Router()
 
-const Contenedor = require('../contenedor')
+const Contenedor = require('../models/productos')
 const productos = new Contenedor("productos.txt")
 
 router.get('/', async(req, res) => {
     await productos.getAll()
     .then(result => {
-      res.status(200).send(JSON.stringify(result))
+      res.render("productos", { productos: result })
     })
     .catch(error => {
       console.log(error)
       res.status(500).send()
     })
-    
 })
 
 router.get('/:id', async(req, res) => {
@@ -26,7 +27,6 @@ router.get('/:id', async(req, res) => {
       } else {
         res.status(404).send(JSON.stringify(`{msg: 'Producto ${req.params.id} no encontrado.'}`))
       }
-      //return result
     })
     .catch(error => {
       console.log(error)
@@ -34,23 +34,21 @@ router.get('/:id', async(req, res) => {
     })
 })
 
-router.post('/', async(req, res) => {
-    const { title, price, thumbnail } = req.body
+router.post('/', upload.single('img'), async(req, res) => {
+    const { title, price } = req.body
     const producto = {
         title: title,
         price: price,
-        thumbnail: thumbnail
+        thumbnail: req.file.filename
     }
     await productos.save(producto)
     .then(result => {
-      res.status(201).send(JSON.stringify( `{id: ${result}}` ))
+      res.redirect('/productos')
     })
     .catch(error => {
       console.log(error)
       res.status(500).send(JSON.stringify(error))
-    })
-    //res.redirect('/')
-    
+    })    
 })
 
 router.put('/:id', async(req, res) => {

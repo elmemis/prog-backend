@@ -1,0 +1,26 @@
+[
+  {
+    "title": "wewqewqe",
+    "price": "2323",
+    "thumbnail": "img-1644697207277",
+    "id": 8
+  },
+  {
+    "title": "heladera",
+    "price": "100",
+    "thumbnail": "img-1644697624546",
+    "id": 9
+  },
+  {
+    "title": "Notebook",
+    "price": "100.3",
+    "thumbnail": "img-1644698059545",
+    "id": 10
+  },
+  {
+    "title": "Cocina",
+    "price": "442",
+    "thumbnail": "img-1644698731265",
+    "id": 11
+  }
+]
