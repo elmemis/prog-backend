@@ -28,5 +28,23 @@
     "price": "102",
     "thumbnail": "img-1644703851359",
     "id": 12
+  },
+  {
+    "title": "Mesa",
+    "price": "2222",
+    "thumbnail": "img-1644724412788",
+    "id": 13
+  },
+  {
+    "title": "cocina",
+    "price": "2332",
+    "thumbnail": "img-1644724460625",
+    "id": 14
+  },
+  {
+    "title": "Macbook",
+    "price": "231",
+    "thumbnail": "img-1644724492205",
+    "id": 15
   }
 ]

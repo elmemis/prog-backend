@@ -5,13 +5,17 @@ const PORT = process.env.port || 8080
 
 const productosRouter = require('./routes/productos')
 const pugEngine = require('./engine/pug')
+const ejsEngine = require('./engine/ejs')
+const hbsEngine = require('./engine/handlebars')
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-pugEngine(app)
+//pugEngine(app)
+ejsEngine(app)
+//hbsEngine(app)
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
 

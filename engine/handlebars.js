@@ -1,3 +1,4 @@
+const path = require('path')
 const { engine } = require('express-handlebars')
 
 module.exports = function(app) {
