@@ -11,7 +11,13 @@ const productos = new Contenedor("productos.txt")
 router.get('/', async(req, res) => {
     await productos.getAll()
     .then(result => {
-      res.render("productos", { productos: result })
+      res.render(
+        "productos", 
+        { 
+          productos: result, 
+          layout: false 
+        }
+      )
     })
     .catch(error => {
       console.log(error)
@@ -43,7 +49,11 @@ router.post('/', upload.single('img'), async(req, res) => {
     }
     await productos.save(producto)
     .then(result => {
-      res.redirect('/productos')
+      const io = req.app.get('socket.io');
+      io.emit("products", '')
+      //res.status(201).send(JSON.stringify( `{id: ${result}}` ))
+      res.redirect('/')
+
     })
     .catch(error => {
       console.log(error)
@@ -74,6 +84,8 @@ router.delete('/:id', async(req, res) => {
     await productos.deleteById(req.params.id)
     .then( ret => {
       if (ret){
+        const io = req.app.get('socket.io');
+        io.emit("products", '')
         res.status(200).send(JSON.stringify(`{msg: 'Producto ${req.params.id} eliminado.'}`))
       } else {
         res.status(404).send(JSON.stringify(`{msg: 'Producto ${req.params.id} no encontrado.'}`))

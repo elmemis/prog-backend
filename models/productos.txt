@@ -30,12 +30,6 @@
     "id": 12
   },
   {
-    "title": "Mesa",
-    "price": "2222",
-    "thumbnail": "img-1644724412788",
-    "id": 13
-  },
-  {
     "title": "cocina",
     "price": "2332",
     "thumbnail": "img-1644724460625",
@@ -46,5 +40,59 @@
     "price": "231",
     "thumbnail": "img-1644724492205",
     "id": 15
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645470608471",
+    "id": 16
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645470707487",
+    "id": 17
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645470740587",
+    "id": 18
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645476434939",
+    "id": 20
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645476451136",
+    "id": 21
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645476739968",
+    "id": 24
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645476867323",
+    "id": 28
+  },
+  {
+    "title": "mesa2",
+    "price": "111",
+    "thumbnail": "img-1645477883592",
+    "id": 31
+  },
+  {
+    "title": "Smart",
+    "price": "104",
+    "thumbnail": "img-1645478062280",
+    "id": 32
   }
 ]

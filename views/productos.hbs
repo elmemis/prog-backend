@@ -6,6 +6,7 @@
       <th scope="col">Title</th>
       <th scope="col">Price</th>
       <th scope="col"></th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,7 @@
       <td>{{this.title}}</td>
       <td>{{this.price}}</td>
       <td><img src="static/img/{{this.thumbnail}}" width="40px" height="40px"></img></td>
+      <td align="center"><img src="static/img/close.png" width="10px" height="10px" onclick="deleteProduct({{this.id}})" alt="Eliminar producto"></img></td>
     </tr>
     {{/each}}
   </tbody>
@@ -22,6 +24,3 @@
 {{else}}
 <p>No hay productos cargados.</p>
 {{/if}}
-<div align="center">
-  <p><a href="/">Inicio</a></p>
-</div>
