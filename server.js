@@ -21,10 +21,6 @@ app.use(express.urlencoded({ extended: true }))
 hbsEngine(app)
 
 app.use('/static', express.static(path.join(__dirname, 'public')))
-//app.use((req, res, next) => {
-//  req.io = io;
-//  return next();
-//});
 app.set('socket.io', io)
 
 io.on('connection', (socket) => {
