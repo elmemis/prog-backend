@@ -43,3 +43,102 @@ html {
   nav ul li {
     width: 150px;
   }
+
+  div #app {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    /*background-color: antiquewhite;*/
+    justify-content: space-around;
+  }
+
+  div #app > .card {
+    width: 48%;
+    /*background-color: blueviolet;*/
+  }
+
+  .form-add-prod {
+    text-align: center;
+  }
+
+  .messages-container{
+    /*background-color: rgb(250, 217, 205);*/
+  }
+
+  .chat_messages {
+    background-color: #f1eaea;
+  }
+
+  .msg-box {
+    /*background-color: bisque;*/
+    border: 1px solid;
+    border-radius: 0.5rem;
+    /*padding: 0.5rem;*/
+    margin-top: 0.2rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .message-data {
+    background-color: rgb(243 239 210);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: 1px solid;
+  }
+
+  .message-body {
+    background-color: rgb(247, 234, 193);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .chat-data-user{
+    font-weight: bold;
+  }
+
+  .button-sent {
+    background: linear-gradient(to bottom, #44c767 5%, #5cbf2a 100%);
+    background-color: #44c767;
+    border-radius: 9px;
+    border: 1px solid #18ab29;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 1rem;
+    padding: 0.25rem 1rem;
+    text-decoration: none;
+    text-shadow: 0px 0px 6px #2f6627;
+  }
+  .button-sent:hover {
+    background:linear-gradient(to bottom, #5cbf2a 5%, #44c767 100%);
+    background-color:#5cbf2a;
+  }
+  .button-sent:active {
+    position:relative;
+    top:1px;
+  }
+
+  .input-text-chat {
+    padding: 5px;
+    font-size: 16px;
+    border-width: 1px;
+    border-color: #CCCCCC;
+    background-color: #f8f8f8;
+    color: #000000;
+    border-style: solid;
+    border-radius: 0px;
+    box-shadow: 0px 0px 5px rgba(66,66,66,.50);
+    text-shadow: 0px 0px 5px rgba(66,66,66,.20);
+}
+.input-text-chat:focus {
+    outline:none;
+}
+
+.controls {
+  text-align: center;
+}

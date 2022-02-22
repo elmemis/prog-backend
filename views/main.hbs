@@ -1,21 +1,53 @@
-<div>
-    <form action="/productos" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="name">Title </label>
-            <input name="title" />
+<div class="card">
+    <div class="card-header">
+        Agregar producto
+    </div>
+    <div class="card-body">
+        <div class="form-add-prod">
+            <form action="/productos" method="POST" enctype="multipart/form-data">
+                <div>
+                    <label for="name">Title </label>
+                    <input name="title" />
+                </div>
+                <div>
+                    <label for="name">Price </label>
+                    <input name="price" />
+                </div>
+                <div>
+                    <label for="img">Thumbnail </label>
+                    <input type="file" name="img" />
+                    </div>        
+                <div>
+                    <button type="submit">Enviar</button>
+                </div>
+            </form>
         </div>
-        <div>
-            <label for="name">Price </label>
-            <input name="price" />
-        </div>
-        <div>
-            <label for="img">Thumbnail </label>
-            <input type="file" name="img" />
-            </div>        
-        <div>
-            <button type="submit">Enviar</button>
-        </div>
-    </form>
+    </div>
+    <div class="card-header">
+        Listado de productos
+    </div>
+    <div class="card-body" id="div-productos"></div>
 </div>
-<div id="div-productos">
+<div class="card">
+    <div id="div-message-center">
+        <div id="chat-container" class="">
+            <div class="chat_body uk-width-1-1">
+                <div class="chat_messages">
+                    <div class="chat_messages-wrapper">
+                        <div class="message-header">
+                            <h1 align="center">Message Center</h1>
+                        </div>
+                        <div class="messages-container">
+                            <div id="message-box" class="messages"></div>
+                        </div>
+                        <div class="controls">
+                            <input class="input-text-chat" id="email-input" placeholder="Enter email address" />
+                            <input class="input-text-chat" id="message-input" placeholder="Enter message" />
+                            <button id="send-btn" class="button-sent">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

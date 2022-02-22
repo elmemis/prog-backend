@@ -7,13 +7,22 @@ const { Server } = require('socket.io')
 const PORT = process.env.port || 8080
 
 const productosRouter = require('./routes/productos')
-const pugEngine = require('./engine/pug')
-const ejsEngine = require('./engine/ejs')
 const hbsEngine = require('./engine/handlebars')
+
+const Messages = require('./models/messages')
 
 const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
+
+const messages = new Messages('messages.txt');
+let msgList = [];
+const users = {};
+
+(async () => {
+  msgList = await messages.get();
+})();
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -24,15 +33,27 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 app.set('socket.io', io)
 
 io.on('connection', (socket) => {
-  console.log(`nuevo socket iniciado: ${socket.id}`)
+  socket.on('login', (email) => {
+    users[socket.id] = email
 
+    //for (const user of Object.entries(users)){
+    //  socket.emit('usersOn', { id: user[0], email: user[1] })
+    //}
+    socket.emit('messages', msgList)
+  })
+
+  socket.on('disconnect', function() {
+    console.log(`Disconnected: ${socket.id}`)
+    console.log(`Disconnected user: ${users[socket.id]}`)
+  })
 
   socket.on("message", (data) => {
-    console.log(data)
+    messages.save(data)
+    msgList.push(data)
+    socket.broadcast.emit('message', data)
   })
 
   socket.on("products", (data) => {
-    console.log(data)
     socket.broadcast.emit("products", '')
   })
 })

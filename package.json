@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon -e js,mjs,json,hbs,pug,ejs server.js"
+    "dev": "nodemon -e js,mjs,json,hbs,pug,ejs,css server.js"
   },
   "keywords": [],
   "author": "",
