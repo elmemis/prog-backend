@@ -7,6 +7,8 @@ const { Server } = require('socket.io')
 const PORT = process.env.port || 8080
 
 const productosRouter = require('./routes/productos')
+const carritoRouter = require('./routes/carrito')
+
 const hbsEngine = require('./engine/handlebars')
 
 const Messages = require('./models/messages')
@@ -53,16 +55,17 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('message', data)
   })
 
-  socket.on("products", (data) => {
-    socket.broadcast.emit("products", '')
-  })
+  //socket.on("products", (data) => {
+  //  socket.broadcast.emit("products", '')
+  //})
 })
 
 app.get('/', (req, res) => {
   res.render('main')
 })
 
-app.use('/productos', productosRouter)
+app.use('/api/productos', productosRouter)
+app.use('/api/carrito', carritoRouter)
 
 const sv = server.listen(PORT, function(){
   console.log(`Servidor iniciando en port ${PORT}`)

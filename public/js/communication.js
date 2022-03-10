@@ -5,10 +5,31 @@ const messageInputElement = document.getElementById("message-input")
 const inputEmailElement = document.getElementById("email-input")
 
 async function getProducts(){
-    await fetch('/productos')
-        .then(response => response.text())
+    await fetch('/api/productos')
+        .then(response => response.json())
         .then(data => {
-            productTable.innerHTML = data
+            data.forEach(producto => {
+                const prodCard = document.createElement("div")
+                prodCard.innerHTML = `
+                    <div class="card" style="width: 15rem;">
+                        <img src="${producto.thumbnail}" class="card-img-top" alt="..." width="50px">
+                        <div class="card-body">
+                            <h5 class="card-title">${producto.name}</h5>
+                            <p class="card-text">${producto.description}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Stock: ${producto.stock}</li>
+                            <li class="list-group-item">Precio: ${producto.price}</li>
+                            <li class="list-group-item">Código: ${producto.code}</li>
+                        </ul>
+                        <div class="card-body">
+                            <a href="#" class="card-link">Editar</a>
+                            <a href="#" class="card-link">Eliminar</a>
+                        </div>
+                    </div>
+                `
+                productTable.appendChild(prodCard)
+            })
         })
         .catch(error => {
             console.log(`Error: ${error}`)
@@ -18,8 +39,10 @@ async function getProducts(){
         );
 };
 
+
+
 async function deleteProduct(id){
-    await fetch(`/productos/${id}`, {
+    await fetch(`/api/productos/${id}`, {
         method: 'DELETE'
     })
     .then(() => {

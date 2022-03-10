@@ -60,7 +60,7 @@ class Productos{
     }
 
     async getById(idNumber){
-        let producto = {}
+        let producto = null
         try{
             const allProducts = await this.getAll().then( data => {
                 for (const element of data){
@@ -79,7 +79,11 @@ class Productos{
     async getAll(){
         try{
             const data = await fs.readFileSync(this.archivo, 'utf-8')
-            return JSON.parse(data)
+            if (data.length == 0) {
+                return {}
+            } else {
+                return JSON.parse(data)
+            }
         }
         catch(err){
             throw new Error(`Error en lectura. \n${err}`)
@@ -121,4 +125,4 @@ class Productos{
     }
 }
 
-module.exports = Productos
+module.exports = { Productos }

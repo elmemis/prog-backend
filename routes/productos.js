@@ -1,101 +1,33 @@
-const express = require('express')
-const { Router } = express;
-
-const upload = require('../middlewares/file')
-
+const { Router } = require('express')
 const router = Router()
 
-const Contenedor = require('../models/productos')
-const productos = new Contenedor("productos.txt")
+const { body, checkSchema, validationResult } = require('express-validator');
+const { newProductSchema, updProductSchema } = require('./validators/productos')
+const productosController = require('../controllers/productos')
+const { checkResourceAuthorization } = require('../middlewares/authorization.js')
 
-router.get('/', async(req, res) => {
-    await productos.getAll()
-    .then(result => {
-      res.render(
-        "productos", 
-        { 
-          productos: result, 
-          layout: false 
-        }
-      )
-    })
-    .catch(error => {
-      console.log(error)
-      res.status(500).send()
-    })
+//Obtener todos los productos.
+router.get('/', productosController.getProducts)
+//Obtener producto por su ID.
+router.get('/:id', productosController.getProduct)
+//Almacenar nuevo producto.
+router.post('/', checkResourceAuthorization, checkSchema(newProductSchema), (req, res) => {
+  const errorsValidation = validationResult(req, { strictParams: ['body'] } )
+  if (!errorsValidation.isEmpty()){
+    return res.status(400).json({errors: errorsValidation.array()})
+  }
+  productosController.addProduct(req, res)
 })
+//Actualizar atributos de un producto.
+router.put('/:id', checkResourceAuthorization, checkSchema(updProductSchema), async(req, res) => {
+  const errorsValidation = validationResult(req, { strictParams: ['body'] } )
+  if (!errorsValidation.isEmpty()){
+    return res.status(400).json({errors: errorsValidation.array()})
+  }
+  productosController.updateProduct(req, res)
 
-router.get('/:id', async(req, res) => {
-    await productos.getById(req.params.id)
-    .then(result => {
-      if (Object.keys(result).length > 0){
-        res.status(200).send(JSON.stringify(result))
-      } else {
-        res.status(404).send(JSON.stringify(`{msg: 'Producto ${req.params.id} no encontrado.'}`))
-      }
-    })
-    .catch(error => {
-      console.log(error)
-      res.status(500).send()
-    })
 })
-
-router.post('/', upload.single('img'), async(req, res) => {
-    const { title, price } = req.body
-    const producto = {
-        title: title,
-        price: price,
-        thumbnail: req.file.filename
-    }
-    await productos.save(producto)
-    .then(result => {
-      const io = req.app.get('socket.io');
-      io.emit("products", '')
-      //res.status(201).send(JSON.stringify( `{id: ${result}}` ))
-      res.redirect('/')
-
-    })
-    .catch(error => {
-      console.log(error)
-      res.status(500).send(JSON.stringify(error))
-    })    
-})
-
-router.put('/:id', async(req, res) => {
-    await productos.getById(req.params.id)
-    .then( async (result) => {
-      if (Object.keys(result).length > 0){
-        req.body.id = req.params.id
-        await productos.update(req.body)
-        .then(
-          res.status(200).send(JSON.stringify(`{msg: 'Producto ${req.params.id} actualizado.'}`))
-        )   
-      } else {
-        res.status(404).send(JSON.stringify(`{msg: 'Producto ${req.params.id} no encontrado.'}`))
-      }
-    })
-    .catch(error => {
-      console.log(error)
-      res.status(500).send(JSON.stringify(error))
-    }) 
-})
-
-router.delete('/:id', async(req, res) => {
-    await productos.deleteById(req.params.id)
-    .then( ret => {
-      if (ret){
-        const io = req.app.get('socket.io');
-        io.emit("products", '')
-        res.status(200).send(JSON.stringify(`{msg: 'Producto ${req.params.id} eliminado.'}`))
-      } else {
-        res.status(404).send(JSON.stringify(`{msg: 'Producto ${req.params.id} no encontrado.'}`))
-      }
-    }
-    )
-    .catch(error => {
-        console.log(error)
-        res.status(500).send(JSON.stringify(error))
-    })
-})
+//Eliminar un producto.
+router.delete('/:id', checkResourceAuthorization, productosController.deleteProduct)
 
 module.exports = router
