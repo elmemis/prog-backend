@@ -1,123 +1,92 @@
 const fs = require('fs');
 const path = require('path')
 
+const { optionsMySQL } = require('./databases/options')
+const db = require('knex')(optionsMySQL)
+
 class Productos{
-    constructor(fileName){
-        this.archivo = path.join(__dirname, fileName)
+    constructor(table){
+        this.table = table
     }
 
     async save(producto){
-        try{
-            const data = fs.readFileSync(this.archivo, 'utf-8')
-            let productos = []
-            let lastId = 0
-            if (data){
-                productos = JSON.parse(data)
-                if (productos.length > 0) {
-                    lastId = productos[productos.length - 1].id
-                }
-            }
-            producto.id = lastId + 1
-            productos.push(producto)
-            await fs.writeFileSync(this.archivo, JSON.stringify(productos, null, 2), 'utf-8')
-            return producto.id
-        } 
-        catch(err){
-            if (err.code === 'ENOENT') {
-                producto.id = 1
-                await fs.writeFileSync(this.archivo, JSON.stringify([producto], null, 2), 'utf-8')
-                return producto.id
-            } else {
-                throw new Error(`Error en lectura. \n${err}`)
-            }
-        }
+        const id = await db(this.table)
+            .insert(producto)
+            .then( result => {
+                console.log(`Producto insertado correctamente, ret ID: ${result[0]}`)
+                return result[0]
+            })
+            .catch(err => {
+                console.log(`Error al inserta en la base. Err: ${err}`)
+                throw err
+            })
+
+        return id
     }
 
     async update(producto){
-        try{
-            await this.getById(producto.id)
-            .then( async(vProducto) => {
-                vProducto.title = producto.title || vProducto.title
-                vProducto.price = producto.price || vProducto.price
-                vProducto.thumbnail = producto.thumbnail || vProducto.thumbnail
-                await this.getAll().then(async(allProducts) => {
-                    const nProducts = []
-                    for (const p of allProducts){
-                        if (p.id === vProducto.id){
-                            nProducts.push(vProducto)
-                        } else {
-                            nProducts.push(p)
-                        }
-                    }
-                    await fs.writeFileSync(this.archivo, JSON.stringify(nProducts, null, 2), 'utf-8')
-                })
+        const ret = await db(this.table)
+            .where('id', producto.id)
+            .update(producto)
+            .then( result => {
+                return result
             })
-            return true
-        }
-        catch(err){
-            throw new Error(`Error en lectura. \n${err}`)
-        }
+            .catch(err => {
+                console.log(`Error al inserta en la base. Err: ${err}`)
+                throw err
+            })
+        return ret
     }
 
     async getById(idNumber){
-        let producto = {}
-        try{
-            const allProducts = await this.getAll().then( data => {
-                for (const element of data){
-                    if (element.id == idNumber){
-                        producto = element
-                    }
-                };
+        const product = await db.from(this.table).select('*').where('id', idNumber).first()
+            .then((row) => {
+                console.log(row)
+                return row
             })
-            return producto
-        }
-        catch(err){
-            throw new Error(`Error en lectura. \n${err}`)
-        }    
+            .catch( err => { 
+                console.log(`Error al obtener productos desde la base de datos. Err: ${err}`)
+                throw err
+            })
+        return product
     }
 
     async getAll(){
-        try{
-            const data = await fs.readFileSync(this.archivo, 'utf-8')
-            return JSON.parse(data)
-        }
-        catch(err){
-            throw new Error(`Error en lectura. \n${err}`)
-        }
-
+        const products = await db.from(this.table).select('*')
+            .then((rows) => {
+                return rows
+            })
+            .catch( err => { 
+                console.log(`Error al obtener productos desde la base de datos. Err: ${err}`)
+                throw err
+            })
+        return products
     }
 
     async deleteById(idNumber){
-        const productos = []
-        let guardar = false
-        try{
-            const allProducts = await this.getAll().then( data => {
-                for (const element of data){
-                    if (element.id != idNumber){
-                        productos.push(element)
-                    } else {
-                        guardar = true
-                    }   
-                }
+        const ret = await db.from(this.table).where('id', idNumber).del()
+            .then(() => {
+                console.log(`Producto ${idNumber} eliminado.`)
+                return true
             })
-            if (guardar) {
-                await fs.writeFileSync(this.archivo, JSON.stringify(productos, null, 2), 'utf-8')
-            }
-        }
-        catch(err){
-            throw new Error(`Error de escritura. \n${err}`)
-        }
-        return guardar
+            .catch( err => { 
+                console.log(`Error al eliminar producto id ${idNumber} en la base de datos. Err: ${err}`)
+                throw err
+            })
+        return ret
     }
 
     async deleteAll(){
-        try{
-            let productos = []
-            await fs.writeFileSync(this.archivo, JSON.stringify(productos, null, 2), 'utf-8')
-        }
-        catch(err){
-            throw new Error(`Error de escritura. \n${err}`)
-        }
+        const ret = await db.from(this.table).del()
+            .then(() => {
+                console.log('Productos eliminados.')
+                return true
+            })
+            .catch( err => { 
+                console.log(`Error al eliminar productos en la base de datos. Err: ${err}`)
+                throw err
+            })
+        return ret 
     }
 }
 

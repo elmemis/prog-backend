@@ -6,7 +6,7 @@ const upload = require('../middlewares/file')
 const router = Router()
 
 const Contenedor = require('../models/productos')
-const productos = new Contenedor("productos.txt")
+const productos = new Contenedor("productos")
 
 router.get('/', async(req, res) => {
     await productos.getAll()

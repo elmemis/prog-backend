@@ -15,7 +15,7 @@ const app = express()
 const server = http.createServer(app)
 const io = new Server(server)
 
-const messages = new Messages('messages.txt');
+const messages = new Messages('messages');
 let msgList = [];
 const users = {};
 

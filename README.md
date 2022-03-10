@@ -1,2 +1,2 @@
-# Desafio 6
-## branch: consigna 2
+# Desafio 8
+## branch: websockets y persistencia mysql/sqlite
