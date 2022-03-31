@@ -72,8 +72,9 @@ sendBtnElement.addEventListener('click', (e) => {
 })
 
 function render(data) {
+    console.log(data)
     const msgElement = document.createElement("div")
-    const userEl = `<span class="chat-data-user">${data.email}</span>`
+    const userEl = `<span class="chat-data-user">${data.autor.email}</span>`
     const timeEl = `<span class="chat-data-date-time">${new Date(data.date).toLocaleString()}</span> &nbsp;`
     const cssClass = "msg-box"
     msgElement.classList.add(cssClass)
@@ -88,10 +89,25 @@ function render(data) {
 }
 
 function loadMessages(data){
-    //const { normalize, schema } = require("normalizr")
-    console.log(denormalize(data))
 
-    for (msgIndex in data){
-        render(data[msgIndex])
+    /*const autor = new normalizr.schema.Entity("autores", {},{ idAttribute: 'email'})
+    const text = new normalizr.schema.Entity("mensajes", {
+        autor: autor
+    });
+    const mensajes = new normalizr.schema.Array(text);*/
+
+    const autor = new normalizr.schema.Entity("autores", {}, { idAttribute: 'email' })
+    const mensaje = new normalizr.schema.Entity("mensajes", {
+        autor: autor
+    });
+    const datamsg = new normalizr.schema.Entity("datamsg", {
+        mensajes: [mensaje]
+    });
+
+    const msgs = normalizr.denormalize(data.result, datamsg, data.entities)
+    console.log(msgs.mensajes)
+
+    for (msgIndex in msgs.mensajes){
+        render(msgs.mensajes[msgIndex])
     }
 }

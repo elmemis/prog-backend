@@ -25,18 +25,22 @@ const messages = new Messages();
 let msgList = {};
 const users = {};
 
-const autor = new schema.Entity("autores", {},{ idAttribute: 'email'})
-const text = new schema.Entity("mensajes", {
+const autor = new schema.Entity("autores", {}, { idAttribute: 'email' })
+const mensaje = new schema.Entity("mensajes", {
   autor: autor
 });
-const mensajes = new schema.Array(text);
-/*const mensajes = new schema.Entity("mensajes", {
-  mensaje: [text]
-});*/
+const datamsg = new schema.Entity("datamsg", {
+  mensajes: [mensaje]
+});
 
 (async () => {
   msgListFromDB = await messages.getAll()
-  msgList = { id: 'mensajes', mensajes: [normalize(msgListFromDB, mensajes)] }
+  //msgList = { id: 'mensajes', mensajes: [normalize(msgListFromDB, mensajes)] }
+  msgList = normalize({
+    id: 'mensajes', 
+    mensajes: msgListFromDB 
+  }, datamsg)
+  //console.log(JSON.stringify(msgList, null, 2))
   console.log(msgList)
 })()
 
@@ -68,7 +72,7 @@ mongoose.connect(`${SCHEMA}://${USER}:${PASSWORD}@${HOSTNAME}/${DATABASE}?${OPTI
 
     socket.on("message", (data) => {
       messages.create(data)
-      msgList.push(data)
+      //msgList.push(data)
       socket.broadcast.emit('message', data)
     })
 
