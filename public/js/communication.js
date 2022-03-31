@@ -1,8 +1,15 @@
 const productTable = document.getElementById("div-productos")
 const msgBoxElement = document.getElementById("message-box")
 const sendBtnElement = document.getElementById("send-btn")
-const messageInputElement = document.getElementById("message-input")
+
+const inputMessageElement = document.getElementById("message-input")
 const inputEmailElement = document.getElementById("email-input")
+const inputFirstNameElement = document.getElementById("firstname-input")
+const inputLastNameElement = document.getElementById("lastname-input")
+const inputAgeElement = document.getElementById("age-input")
+const inputAliasElement = document.getElementById("alias-input")
+const inputAvatarElement = document.getElementById("avatar-input")
+
 
 async function getProducts(){
     await fetch('/productos')
@@ -41,20 +48,27 @@ comm.on('messages', loadMessages)
 sendBtnElement.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (!messageInputElement.value || !inputEmailElement.value){
+    if (!inputMessageElement.value || !inputEmailElement.value){
         alert('Debe ingresar un correo y un mensaje.');
         return
     }
 
     inputEmailElement.disabled = true
     const message = {
-        text: messageInputElement.value,
-        email: inputEmailElement.value,
+        autor: {
+            email: inputEmailElement.value,
+            nombre: inputFirstNameElement.value,
+            apellido: inputLastNameElement.value,
+            edad: inputAgeElement.value,
+            alias: inputAliasElement.value,
+            avatar: inputAvatarElement.value,
+        },
+        text: inputMessageElement.value,
         date: Date.now()
     }
     comm.emit('message', message)
     render(message)
-    messageInputElement.value = null
+    inputMessageElement.value = null
 })
 
 function render(data) {

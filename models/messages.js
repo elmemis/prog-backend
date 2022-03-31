@@ -1,56 +1,40 @@
+const mongoose = require('mongoose')
 
-const fs = require('fs');
-const path = require('path')
-
-const { optionsSQLite } = require('./databases/options')
-const db = require('knex')(optionsSQLite)
-
-class Messages{
-    constructor(table){
-        this.table = table
+class Messages {
+    constructor(){
+        const schema = new mongoose.Schema({
+            autor : {
+                email: String,
+                nombre: String,
+                apellido: String,
+                edad: Number,
+                alias: String,
+                avatar: String
+            },
+            text: String,
+            date: { type: Number, default: Date.now() }
+        })
+        this.model = mongoose.model("mensaje", schema)
     }
 
-    async save2(message){
-        await fs.promises.appendFile(this.archivo, JSON.stringify(message, null, 2) + ',')
-        .then(() => { console.log('Message persisted.')})
-        .catch(err => { console.log(`Can't persist message into ${this.archivo}. \nError: ${err}`)})
+    async create(message) {
+        const msg = await this.model.create(message)
+        console.log(JSON.stringify(msg, null, 2))
+        return msg
     }
 
-    async save(message){
-        await db(this.table)
-            .insert(message)
-            .then( result => {
-                console.log(`Mensaje insertado correctamente, ret ID: ${result}`)
-                return result[0]
-            })
-            .catch(err => {
-                console.log(`Error al inserta en la base. Err: ${err}`)
-                throw err
-            })
-
-    }
-
-    async get(){
-        const messages = await db.from(this.table).select('*')
-            .then((rows) => {
-                return rows
-            })
-            .catch( err => { 
-                console.log(`Error al obtener mensajes desde la base de datos. Err: ${err}`)
-                throw err
-            })
-        return messages
-    }
-
-    async get2(){
-        try{
-            const msgs = await fs.readFileSync(this.archivo, 'utf-8')
-            return JSON.parse(`[${msgs.slice(0, -1)}]`)
-        }
-        catch(err){
-            console.log(`Can't read messages from file ${this.archivo}. \nError: ${err}`)
-            throw new Error(`Error en lectura. \n${err}`)
-        }
+    async getAll() {
+        let msgs = []
+        msgs = await this.model.find()
+        console.log(JSON.stringify(msgs, null, 2))
+        return msgs.map((m) => {
+            return {
+                autor: m.autor,
+                text: m.text,
+                id: m._id,
+                timestamp: m.timestamp
+            }
+        })
     }
 }
 
