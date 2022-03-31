@@ -1,2 +1,2 @@
-# Desafio 8
-## branch: websockets y persistencia mysql/sqlite
+# Desafio 12
+## branch: mocks y normalización
