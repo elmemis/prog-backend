@@ -26,13 +26,13 @@ class Messages {
     async getAll() {
         let msgs = []
         msgs = await this.model.find()
-        console.log(JSON.stringify(msgs, null, 2))
+        //console.log(JSON.stringify(msgs, null, 2))
         return msgs.map((m) => {
             return {
                 autor: m.autor,
                 text: m.text,
                 id: m._id,
-                timestamp: m.timestamp
+                date: m.date
             }
         })
     }

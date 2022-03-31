@@ -7,6 +7,8 @@ const { Server } = require('socket.io')
 const mongoose = require('mongoose')
 const { HOSTNAME, SCHEMA, DATABASE, USER, PASSWORD, OPTIONS } = require("./config/mongo")
 
+const { normalize, schema } = require("normalizr")
+
 const PORT = process.env.port || 8080
 
 const productosRouter = require('./routes/productos')
@@ -20,12 +22,23 @@ const server = http.createServer(app)
 const io = new Server(server)
 
 const messages = new Messages();
-let msgList = [];
+let msgList = {};
 const users = {};
 
+const autor = new schema.Entity("autores", {},{ idAttribute: 'email'})
+const text = new schema.Entity("mensajes", {
+  autor: autor
+});
+const mensajes = new schema.Array(text);
+/*const mensajes = new schema.Entity("mensajes", {
+  mensaje: [text]
+});*/
+
 (async () => {
-  msgList = await messages.getAll();
-})();
+  msgListFromDB = await messages.getAll()
+  msgList = { id: 'mensajes', mensajes: [normalize(msgListFromDB, mensajes)] }
+  console.log(msgList)
+})()
 
 
 mongoose.connect(`${SCHEMA}://${USER}:${PASSWORD}@${HOSTNAME}/${DATABASE}?${OPTIONS}`).then( () => {

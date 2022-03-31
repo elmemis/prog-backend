@@ -88,6 +88,9 @@ function render(data) {
 }
 
 function loadMessages(data){
+    //const { normalize, schema } = require("normalizr")
+    console.log(denormalize(data))
+
     for (msgIndex in data){
         render(data[msgIndex])
     }
