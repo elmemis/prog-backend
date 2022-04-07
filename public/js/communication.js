@@ -71,16 +71,21 @@ sendBtnElement.addEventListener('click', (e) => {
     inputMessageElement.value = null
 })
 
+function analyze(obj){
+    console.log(util.inspect(obj, true, 12, true))
+};
+
 function render(data) {
     console.log(data)
     const msgElement = document.createElement("div")
     const userEl = `<span class="chat-data-user">${data.autor.email}</span>`
+    const userAv = `<span class="chat-data-user-avatar"><img src="${data.autor.avatar}" width="25px" height="25px"></img></span>`
     const timeEl = `<span class="chat-data-date-time">${new Date(data.date).toLocaleString()}</span> &nbsp;`
     const cssClass = "msg-box"
     msgElement.classList.add(cssClass)
     msgElement.innerHTML = `
     <div class="message-data">
-      ${userEl} [ ${timeEl}] escribió: 
+      ${userEl} ${userAv} [ ${timeEl}] escribió: 
     </div>
     <div class="message-body">${data.text}</div>
     `
@@ -105,7 +110,8 @@ function loadMessages(data){
     });
 
     const msgs = normalizr.denormalize(data.result, datamsg, data.entities)
-    console.log(msgs.mensajes)
+    //console.log(msgs.mensajes)
+    analyze(datamsg)
 
     for (msgIndex in msgs.mensajes){
         render(msgs.mensajes[msgIndex])

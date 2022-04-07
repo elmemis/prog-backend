@@ -1,9 +1,10 @@
 const mongoose = require('mongoose')
+const { faker } = require('@faker-js/faker');
 
 class Messages {
     constructor(){
         const schema = new mongoose.Schema({
-            autor : {
+            autor: { 
                 email: String,
                 nombre: String,
                 apellido: String,
@@ -13,7 +14,7 @@ class Messages {
             },
             text: String,
             date: { type: Number, default: Date.now() }
-        })
+        });
         this.model = mongoose.model("mensaje", schema)
     }
 
@@ -26,8 +27,10 @@ class Messages {
     async getAll() {
         let msgs = []
         msgs = await this.model.find()
-        //console.log(JSON.stringify(msgs, null, 2))
         return msgs.map((m) => {
+            if (! m.autor.avatar){
+                m.autor.avatar = faker.internet.avatar()
+            }
             return {
                 autor: m.autor,
                 text: m.text,
