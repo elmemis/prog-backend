@@ -20,7 +20,7 @@ class Messages {
 
     async create(message) {
         const msg = await this.model.create(message)
-        console.log(JSON.stringify(msg, null, 2))
+        console.log(JSON.stringify(msg, null, 4))
         return msg
     }
 
@@ -41,4 +41,4 @@ class Messages {
     }
 }
 
-module.exports = Messages
+module.exports = new Messages()
