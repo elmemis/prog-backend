@@ -71,10 +71,6 @@ sendBtnElement.addEventListener('click', (e) => {
     inputMessageElement.value = null
 })
 
-function analyze(obj){
-    console.log(util.inspect(obj, true, 12, true))
-};
-
 function render(data) {
     console.log(data)
     const msgElement = document.createElement("div")
